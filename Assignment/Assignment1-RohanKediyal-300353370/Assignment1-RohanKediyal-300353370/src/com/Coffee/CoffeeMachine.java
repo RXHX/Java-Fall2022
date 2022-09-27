@@ -2,31 +2,13 @@ package com.Coffee;
 
 import java.text.DecimalFormat;
 import java.util.Scanner;
-
-/*
- * 
- * 
- Enter the coffee number >> 3
-Please choose the size (S/M/L):
-(S)mall: $3.70 / (M)edium: $4.55 / (L)arge: $5.00 >> M
-Do you want (M)ilk, (C)ream or (N)one? C
-How many cream do you want? 2
-How many sugar do you want? 2
-Confirm you order (Y/N): Y
-Thank you for your purchase!
-Your Medium Cappuccino (2 Cream and 2 Sugar) is ready to serve.
-Total cost: $4.78
- * 
- * 
- * 
- * 
- */
-public class CoffeeMachine {
+ class CoffeeMachine {
 
 	public static double coffeePrice;
 	public static int milkCount = 0;
 	public static int creamCount = 0;
 	public static int sugarCount = 0;
+	public static boolean loopBreaker=true;
 	  public static void dispalyMenu()
 	  {
 		  System.out.println("Welcome to N&I Cafe\r\n"
@@ -61,7 +43,9 @@ public class CoffeeMachine {
               sugarCount = sc.nextInt();
 			  break;
 		  
-		  
+		  default : 
+			  System.out.println("Enter a valid input");
+			  break;
 		  
 		  }
 		  
@@ -74,10 +58,11 @@ public class CoffeeMachine {
 		  return formatter.format((coffeePrice)+(coffeePrice * 0.05));
 	  }
 	
-	  public static void confirmOrder(char orderConfirmation,char addon, char size, String name, Scanner sc  )
+	  public static boolean confirmOrder(char orderConfirmation,char addon, char size, String name, Scanner sc  )
 	  {
 		  if(orderConfirmation == 'Y'|| orderConfirmation == 'y')
 	      {
+			  loopBreaker = false;
 	    	  System.out.println("Thank you for your purchase!");
 	    	  if(addon == 'M' || addon == 'm')
    	    	  {
@@ -108,15 +93,15 @@ public class CoffeeMachine {
                     {
                     
                     case 'S','s':
-          			 System.out.println("Your Small Latte ("+milkCount+" Milk and "+sugarCount+" Sugar) is ready to serve.");
+          			 System.out.println("Your Small Latte ("+creamCount+" Cream and "+sugarCount+" Sugar) is ready to serve.");
           			 System.out.println("Total cost: $"+computeBill());
           			  break;
           		  case 'M','m':
-         			 System.out.println("Your Medium Latte ("+milkCount+" Milk and "+sugarCount+" Sugar) is ready to serve.");
+         			 System.out.println("Your Medium Latte ("+creamCount+" Cream and "+sugarCount+" Sugar) is ready to serve.");
           			 System.out.println("Total cost: $"+computeBill());
           			 break;
           		  case 'L','l':
-          			System.out.println("Your Large Latte ("+milkCount+" Milk and "+sugarCount+" Sugar) is ready to serve.");
+          			System.out.println("Your Large Latte ("+creamCount+" Cream and "+sugarCount+" Sugar) is ready to serve.");
           			 System.out.println("Total cost: $"+computeBill());
           			 break;	  
           	    
@@ -131,15 +116,15 @@ public class CoffeeMachine {
                     {
                     
                     case 'S','s':
-          			 System.out.println("Your Small Latte ("+milkCount+" Milk and "+sugarCount+" Sugar) is ready to serve.");
+          			 System.out.println("Your Small Latte ("+sugarCount+" Sugar) is ready to serve.");
           			 System.out.println("Total cost: $"+computeBill());
           			  break;
           		  case 'M','m':
-         			 System.out.println("Your Medium Latte ("+milkCount+" Milk and "+sugarCount+" Sugar) is ready to serve.");
+         			 System.out.println("Your Medium Latte ("+sugarCount+" Sugar) is ready to serve.");
           			 System.out.println("Total cost: $"+computeBill());
           			 break;
           		  case 'L','l':
-          			System.out.println("Your Large Latte ("+milkCount+" Milk and "+sugarCount+" Sugar) is ready to serve.");
+          			System.out.println("Your Large Latte ("+sugarCount+" Sugar) is ready to serve.");
           			 System.out.println("Total cost: $"+computeBill());
           			 break;	  
           	    
@@ -148,14 +133,11 @@ public class CoffeeMachine {
 	    		  
 	    		  
 	    	  }
-	      }
-	      else if(orderConfirmation == 'N'|| orderConfirmation == 'n')
-	      {
-	    	  System.exit(0);
-	      }
-	      else {
+	    	  
 	    	  
 	      }
+		return loopBreaker;
+	     
 		  
 	  }
 	  
@@ -167,8 +149,8 @@ public class CoffeeMachine {
 		
 		int option;  
 		char addon;
-		char orderConfirmation;
-       while(true)
+		char orderConfirmation = 'N';
+       while(loopBreaker)
 	   {
 		   dispalyMenu();  
 		   System.out.print("Enter the coffee number >>");
@@ -176,56 +158,65 @@ public class CoffeeMachine {
 	       switch(option)
 	       {
 	       case 1: 
-	    	       Latte coffeeLatte = new Latte();
-	    	       coffeePrice = Latte.CoffeePrice();
+	    	   Coffee latte = new Coffee(3.70, 4.45, 5.00, "Latte");
+	    	   coffeePrice = latte.CoffeePrice();
 	    	       System.out.print("Do you want (M)ilk, (C)ream or (N)one?");
 	    	       addon = sc.next().charAt(0);
 	    	       chooseAddons(addon,sc);
 	    	       System.out.print("Confirm you order (Y/N):");
 	    	        orderConfirmation = sc.next().charAt(0); 
-	    	        confirmOrder(orderConfirmation,addon,Latte.size,"Latte",sc);
-	    	     
-	    	      
+	    	        confirmOrder(orderConfirmation,addon,latte.size,"Latte",sc);
+	    
 	    	   break;
+	    	   
 	       case 2: 
-	    	      Americano coffeeSizeAmericano = new Americano();
-	    	      coffeePrice = Latte.CoffeePrice();
+	    	   Coffee americano = new Coffee(2.95,3.50,4.10,"Americano");
+	    	   coffeePrice = americano.CoffeePrice();
 	    	       System.out.print("Do you want (M)ilk, (C)ream or (N)one?");
 	    	       addon = sc.next().charAt(0);
 	    	       chooseAddons(addon,sc);
 	    	       System.out.print("Confirm you order (Y/N):");
 	    	        orderConfirmation = sc.next().charAt(0); 
-	    	        confirmOrder(orderConfirmation,addon,Latte.size,"Latte",sc);
+	    	        confirmOrder(orderConfirmation,addon,americano.size,"Americano",sc);
 	    	      break;
+	    	      
+	    	      
 	       case 3:
-	    	      Cappuccino coffeeSizeCappuccino = new Cappuccino();
-	    	      coffeePrice = Latte.CoffeePrice();
+	    	   Coffee cappuccino = new Coffee(3.70,4.55, 5.00,"Cappuccino");
+	    	      coffeePrice = cappuccino.CoffeePrice();
 	    	       System.out.print("Do you want (M)ilk, (C)ream or (N)one?");
 	    	       addon = sc.next().charAt(0);
 	    	       chooseAddons(addon,sc);
 	    	       System.out.print("Confirm you order (Y/N):");
 	    	        orderConfirmation = sc.next().charAt(0); 
-	    	        confirmOrder(orderConfirmation,addon,Latte.size,"Latte",sc);
+	    	        confirmOrder(orderConfirmation,addon,cappuccino.size,"Cappuccino",sc);
 	    	      break;
+	    	      
+	    	      
 	       case 4:
-	    	      CaramelMacchiato coffeeSizeCaramelMacchiato = new CaramelMacchiato();
-	    	      coffeePrice = Latte.CoffeePrice();
+	    	   Coffee caramelMacchiato =  new Coffee(3.75, 4.50, 5.00, "Caramel Macchiato");
+	    	      coffeePrice = caramelMacchiato.CoffeePrice();
 	    	       System.out.print("Do you want (M)ilk, (C)ream or (N)one?");
 	    	       addon = sc.next().charAt(0);
 	    	       chooseAddons(addon,sc);
 	    	       System.out.print("Confirm you order (Y/N):");
 	    	        orderConfirmation = sc.next().charAt(0); 
-	    	        confirmOrder(orderConfirmation,addon,Latte.size,"Latte",sc);
+	    	        confirmOrder(orderConfirmation,addon,caramelMacchiato.size,"Caramel Macchiato",sc);
 	    	      break;
-	       case 5: Mocha coffeeSizeMocha = new Mocha();
-	       coffeePrice = Latte.CoffeePrice();
+	    	      
+	    	      
+	       case 5: 
+	    	  Coffee mocha = new Coffee(4.50, 5.40, 6.00, "Mocha");
+	       coffeePrice = mocha.CoffeePrice();
 	       System.out.print("Do you want (M)ilk, (C)ream or (N)one?");
 	       addon = sc.next().charAt(0);
 	       chooseAddons(addon,sc);
 	       System.out.print("Confirm you order (Y/N):");
 	        orderConfirmation = sc.next().charAt(0); 
-	        confirmOrder(orderConfirmation,addon,Latte.size,"Latte",sc);
+	        confirmOrder(orderConfirmation,addon,mocha.size,"Mocha",sc);
 	       break;
+	       
+	       
 	       default: 
 	    	   System.out.println("Please enter a valid option");
 	    	   break;
