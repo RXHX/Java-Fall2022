@@ -53,7 +53,7 @@ public class Coffee {
 
 		  }
 		  
-		  sc.close();
+		
 		  return coffeePrice;
 	  }
 	

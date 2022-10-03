@@ -35,11 +35,11 @@ import java.util.Scanner;
 		  case 'C','c':
 		      System.out.print("How many cream do you want?");
 			    creamCount = sc.nextInt();
-		        System.out.println("How many sugar do you want?");
+		        System.out.print("How many sugar do you want?");
                 sugarCount = sc.nextInt();
 		        break;
 		  case 'N','n':
-			  System.out.println("How many sugar do you want?");
+			  System.out.print("How many sugar do you want?");
               sugarCount = sc.nextInt();
 			  break;
 		  
@@ -70,15 +70,15 @@ import java.util.Scanner;
                 {
                 
                 case 'S','s':
-      			 System.out.println("Your Small Latte ("+milkCount+" Milk and "+sugarCount+" Sugar) is ready to serve.");
+      			 System.out.println("Your Small "+name+"("+milkCount+" Milk and "+sugarCount+" Sugar) is ready to serve.");
       			 System.out.println("Total cost: $"+computeBill());
       			  break;
       		  case 'M','m':
-     			 System.out.println("Your Medium Latte ("+milkCount+" Milk and "+sugarCount+" Sugar) is ready to serve.");
+     			 System.out.println("Your Medium "+name+"("+milkCount+" Milk and "+sugarCount+" Sugar) is ready to serve.");
       			 System.out.println("Total cost: $"+computeBill());
       			 break;
       		  case 'L','l':
-      			System.out.println("Your Large Latte ("+milkCount+" Milk and "+sugarCount+" Sugar) is ready to serve.");
+      			System.out.println("Your Large "+name+"("+milkCount+" Milk and "+sugarCount+" Sugar) is ready to serve.");
       			 System.out.println("Total cost: $"+computeBill());
       			 break;	  
       	    
@@ -93,15 +93,15 @@ import java.util.Scanner;
                     {
                     
                     case 'S','s':
-          			 System.out.println("Your Small Latte ("+creamCount+" Cream and "+sugarCount+" Sugar) is ready to serve.");
+          			 System.out.println("Your Small "+name+"("+creamCount+" Cream and "+sugarCount+" Sugar) is ready to serve.");
           			 System.out.println("Total cost: $"+computeBill());
           			  break;
           		  case 'M','m':
-         			 System.out.println("Your Medium Latte ("+creamCount+" Cream and "+sugarCount+" Sugar) is ready to serve.");
+         			 System.out.println("Your Medium "+name+"("+creamCount+" Cream and "+sugarCount+" Sugar) is ready to serve.");
           			 System.out.println("Total cost: $"+computeBill());
           			 break;
           		  case 'L','l':
-          			System.out.println("Your Large Latte ("+creamCount+" Cream and "+sugarCount+" Sugar) is ready to serve.");
+          			System.out.println("Your Large "+name+"("+creamCount+" Cream and "+sugarCount+" Sugar) is ready to serve.");
           			 System.out.println("Total cost: $"+computeBill());
           			 break;	  
           	    
@@ -116,15 +116,15 @@ import java.util.Scanner;
                     {
                     
                     case 'S','s':
-          			 System.out.println("Your Small Latte ("+sugarCount+" Sugar) is ready to serve.");
+          			 System.out.println("Your Small "+name+"("+sugarCount+" Sugar) is ready to serve.");
           			 System.out.println("Total cost: $"+computeBill());
           			  break;
           		  case 'M','m':
-         			 System.out.println("Your Medium Latte ("+sugarCount+" Sugar) is ready to serve.");
+         			 System.out.println("Your Medium "+name+"("+sugarCount+" Sugar) is ready to serve.");
           			 System.out.println("Total cost: $"+computeBill());
           			 break;
           		  case 'L','l':
-          			System.out.println("Your Large Latte ("+sugarCount+" Sugar) is ready to serve.");
+          			System.out.println("Your Large "+name+"("+sugarCount+" Sugar) is ready to serve.");
           			 System.out.println("Total cost: $"+computeBill());
           			 break;	  
           	    
