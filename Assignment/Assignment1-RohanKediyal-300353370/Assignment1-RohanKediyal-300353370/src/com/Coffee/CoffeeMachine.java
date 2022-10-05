@@ -1,15 +1,23 @@
 package com.Coffee;
 
+// importing the classes
 import java.text.DecimalFormat;
 import java.util.Scanner;
- class CoffeeMachine {
 
+
+// Coffee Machine Class 
+// to provide the proper user display
+// for the output
+class CoffeeMachine {
+
+	// data Member
 	public static double coffeePrice;
 	public static int milkCount = 0;
 	public static int creamCount = 0;
 	public static int sugarCount = 0;
 	public static boolean loopBreaker=true;
-	  public static void dispalyMenu()
+	// display method  
+	public static void dispalyMenu()
 	  {
 		  System.out.println("Welcome to N&I Cafe\r\n"
 		  		+ "Please choose your coffee\r\n"
@@ -20,7 +28,7 @@ import java.util.Scanner;
 		  		+ "Coffee 5: Mocha");		  
 	  }
 	  
-
+      //method to choose the addons(milk and cream)
 	  public static void chooseAddons(char addon,Scanner sc)
 	  {
 		  switch(addon)
@@ -51,13 +59,14 @@ import java.util.Scanner;
 		  
 		  
 	  }
-	  
+	  // For formatting the Bill
 	  public static String computeBill()
 	  {
 		  DecimalFormat formatter = new DecimalFormat("##.00");
 		  return formatter.format((coffeePrice)+(coffeePrice * 0.05));
 	  }
 	
+	  // For checking the Order Confirmation
 	  public static boolean confirmOrder(char orderConfirmation,char addon, char size, String name, Scanner sc  )
 	  {
 		  if(orderConfirmation == 'Y'|| orderConfirmation == 'y')
@@ -141,6 +150,9 @@ import java.util.Scanner;
 		  
 	  }
 	  
+	  
+	  // Main Method
+	  // Execution will Start from Here
    
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -150,11 +162,16 @@ import java.util.Scanner;
 		int option;  
 		char addon;
 		char orderConfirmation = 'N';
+		
+		// to iterate the menu driven program
        while(loopBreaker)
 	   {
 		   dispalyMenu();  
 		   System.out.print("Enter the coffee number >>");
 	       option = sc.nextInt();  
+	       
+	       // calculating the bill
+	       // according to the user choice
 	       switch(option)
 	       {
 	       case 1: 
