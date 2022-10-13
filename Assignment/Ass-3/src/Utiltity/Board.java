@@ -1,5 +1,8 @@
 package Utiltity;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 public class Board {
 	
 
@@ -36,6 +39,8 @@ public class Board {
 		private int width;
 		private int height;
 		public char[][] cells;
+		public HashMap<String,Integer> mapper = null;
+		public int [][] neighhbour;
 	
 		public final static void clearConsole() {
 			/*
@@ -55,7 +60,7 @@ public class Board {
 			}
 		}
 
-		 public  void computeNeighbour(String status, int i, int j)
+		 public  void computeNeighbour( int i, int j)
 		  {
 			 
 			  int sum = 0;
@@ -77,8 +82,13 @@ public class Board {
 					  {
                         sum++;						  
 					  }
-					  
-					  
+					 
+					  if(j!= 0)
+					   if(cells[0][j-1] == '#')
+						  {
+							  sum++;
+						  }
+					 
 					
 					  
 					
@@ -228,40 +238,56 @@ public class Board {
 				  
 					  
 			  }
-			  else {
-				  
-				  
-			  }
+			
 			  
-		   System.out.println("Sum for Index: "+"("+i+"-"+j+"):"+sum);
+			  neighhbour[i][j] = sum;
+			 
+		   //System.out.println("Sum for Index: "+"("+i+"-"+j+"):"+sum);
 			   
 			  
 			  
 			
 		  }
+		 
+		 
+		 public void printNeighbour()
+		 {
+			 for(int i=0;i<height;i++)
+			 {
+				 for(int j=0;j<width;j++)
+				 {
+					 System.out.print(neighhbour[i][j]+" ");
+				 }
+				 System.out.println();
+			 }
+			 
+			 
+			
+		 }
+		 
 		  public void findNumberOfNeighbour()
 		  {
-			
+			neighhbour = new int[height][width];
 			   
 			  for (int i = 0; i < height; i++) {
 					for (int j = 0; j < width; j++) {
 						if(cells[i][j] == '0')
 						{
-							computeNeighbour("Dead",i,j);
-						 
-						
+							computeNeighbour(i,j);
+					//		mapper.put("Dead", neighhbour[i][j]);
+						   
 						}
 						else if(cells[i][j] == '#')
 						{
-							computeNeighbour("Live",i,j);
+							computeNeighbour(i,j);
+					//		mapper.put("Live", neighhbour[i][j]);
+							
 						}
-						else {
-							System.out.println("What: "+cells[i][j]);
-						}
+					
 					}
 				}
 			
-			 
+			  printNeighbour();
 			  
 			  
 		  }
@@ -292,7 +318,7 @@ public class Board {
 			 * Print all cells of the board
 			 */
 			//Board.clearConsole();
-			System.out.println("At Print Station");
+			
 			for (int i = 0; i < height; i++) {
 				for (int j = 0; j < width; j++) {
 					System.out.print(cells[i][j]);

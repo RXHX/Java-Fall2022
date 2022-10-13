@@ -8,7 +8,7 @@ import java.io.PrintWriter;
 import Utiltity.Board;
 
 public class Main {
-	private static final String FILENAME = "../Assignment-3/src/input";
+	private static final String FILENAME = "../Ass-3/src/input";
 	static char[][] starIndex = null;
 	public static void ReadFile()
 	{
