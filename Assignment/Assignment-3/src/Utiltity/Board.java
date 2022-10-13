@@ -61,6 +61,37 @@ public class Board {
 			  int sum = 0;
 			  
 			  
+			  
+			  
+			  if(((i+1) == height))
+			  {
+
+				  if(cells[0][j] == '#')
+				  {
+					  sum++;
+				  }
+				  
+				  if(!((j+1) == width))
+				  {
+					  if(cells[0][j+1] == '#')
+					  {
+                        sum++;						  
+					  }
+					  
+					  
+					
+					  
+					
+					 
+				  }
+				  
+				  
+			  }
+			  
+			  
+			  
+			  
+			  
 			  if(   !((i-1) == -1)  )
 			  {
 				  if(cells[i-1][j] == '#' )
@@ -75,8 +106,7 @@ public class Board {
 					   {
 						   sum++;
 					   }
-					  
-					  
+		
 				  }
 				  
 				  if(!((j+1) == width))
@@ -88,6 +118,34 @@ public class Board {
 					  
 				  }
 			  
+			  }
+			  else {
+				  
+				  if(cells[height-1][j] == '#')
+				  {
+					  sum++;
+				  }
+				  
+				
+				  
+				  if(!((j+1) == width))
+				{
+					       
+					  if(cells[height-1][j+1] == '#')
+					  {
+					    sum++;	  
+					  }
+				}
+				  else {
+					  
+					  if(cells[height-1][0] == '#')
+					  {
+					    sum++;	  
+					  }
+					  
+					  
+				  }
+				  
 			  }
 			  
 			  
@@ -111,6 +169,31 @@ public class Board {
 				  
 				  
 			  }
+			  else {
+				  if(((cells[i][width-1]) == '#' ))
+				  {
+					  sum++;
+				  }
+				  
+				  if(!((i+1) == height))
+				  {
+					  if(((cells[i+1][width-1]) == '#' ))
+					  {
+						  sum++;
+					  }
+					  
+				  }
+				  else {
+					  
+					  if(cells[0][0] == '#')
+					  {
+						  sum++;
+					  }
+					  
+				  }
+				  
+				  
+			  }
 			  
 			  if(!((j+1) == width))
 			  {
@@ -128,6 +211,9 @@ public class Board {
 				  }
 				  
 			  }
+			  else {
+				 
+			  }
 			  
 			
 			  
@@ -138,7 +224,13 @@ public class Board {
 				   {
 					   sum++;
 				   }
+				   
+				  
 					  
+			  }
+			  else {
+				  
+				  
 			  }
 			  
 		   System.out.println("Sum for Index: "+"("+i+"-"+j+"):"+sum);
