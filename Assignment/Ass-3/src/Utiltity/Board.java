@@ -1,7 +1,9 @@
-package Utiltity;
+
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
 public class Board {
 	
@@ -39,9 +41,8 @@ public class Board {
 		private int width;
 		private int height;
 		public char[][] cells;
-		public HashMap<String,Integer> mapper = null;
 		public int [][] neighhbour;
-	
+	    public char[][] tempcells;
 		public final static void clearConsole() {
 			/*
 			 * clearConsole method to clear the console if you are using Windows' command
@@ -60,7 +61,7 @@ public class Board {
 			}
 		}
 
-		 public  void computeNeighbour( int i, int j)
+		 public  int computeNeighbour( String status ,int i, int j)
 		  {
 			 
 			  int sum = 0;
@@ -241,53 +242,88 @@ public class Board {
 			
 			  
 			  neighhbour[i][j] = sum;
-			 
-		   //System.out.println("Sum for Index: "+"("+i+"-"+j+"):"+sum);
-			   
-			  
-			  
+			
+			 return sum;
 			
 		  }
 		 
 		 
 		 public void printNeighbour()
 		 {
+//			 for(int i=0;i<height;i++)
+//			 {
+//				 for(int j=0;j<width;j++)
+//				 {
+//					 System.out.print(neighhbour[i][j]+" ");
+//				 }
+//				 System.out.println();
+//			 }
+			 
 			 for(int i=0;i<height;i++)
 			 {
 				 for(int j=0;j<width;j++)
 				 {
-					 System.out.print(neighhbour[i][j]+" ");
+					 System.out.print(tempcells[i][j]+" ");
 				 }
 				 System.out.println();
-			 }
-			 
-			 
+			 }	 
 			
 		 }
 		 
 		  public void findNumberOfNeighbour()
 		  {
 			neighhbour = new int[height][width];
-			   
+			tempcells = new char[height][width];
+			   String status = "";
 			  for (int i = 0; i < height; i++) {
 					for (int j = 0; j < width; j++) {
-						if(cells[i][j] == '0')
+						if(cells[i][j] == ' ')
 						{
-							computeNeighbour(i,j);
-					//		mapper.put("Dead", neighhbour[i][j]);
-						   
+						status = "Dead";	
 						}
 						else if(cells[i][j] == '#')
 						{
-							computeNeighbour(i,j);
-					//		mapper.put("Live", neighhbour[i][j]);
-							
+						status = "Live";
 						}
+						int num = computeNeighbour(status,i,j);
+						
 					
+								if(status.equals("Dead"))
+								{
+									if(num == 3)
+									{
+										tempcells[i][j]= '#';
+									}
+									else {
+										tempcells[i][j] = ' ';
+									}
+									
+								}
+								else if(status.equals("Live"))
+								{
+								     if( num == 2 || num == 3)
+								     {
+								    	 tempcells[i][j]= '#';
+								     }
+								     else {
+								    	 tempcells[i][j] = ' ';
+								     }
+									
+									
+								}
+								
+						
+						
+						
 					}
+					
 				}
-			
-			  printNeighbour();
+			 
+			  print();
+			 
+			  setCells(tempcells);
+			 
+			  print();
 			  
 			  
 		  }
