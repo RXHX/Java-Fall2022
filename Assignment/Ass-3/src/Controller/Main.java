@@ -1,14 +1,15 @@
-package Controller;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.LocalTime;
 
-import Utiltity.Board;
+
 
 public class Main {
-	private static final String FILENAME = "../Ass-3/src/input";
+	private static final String FILENAME = "../Assignment-3/src/input";
 	static char[][] starIndex = null;
 	public static void ReadFile()
 	{
@@ -39,7 +40,7 @@ public class Main {
 					 starIndex = new char[rowCount][columnCount];
 					 for (int i = 0; i < rowCount; i++) {
 							for (int j = 0; j < columnCount; j++) {
-								starIndex[i][j] = '0';
+								starIndex[i][j] = ' ';
 							}
 						}
 				 }
@@ -57,9 +58,9 @@ public class Main {
 			     
 				count++;    
 			}
-          newBoard.print();
+         // newBoard.print();
           newBoard.findNumberOfNeighbour();
-          newBoard.print();
+    //      newBoard.print();
 		
 			br.close();
 
@@ -72,12 +73,25 @@ public class Main {
 	}
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub	
-		ReadFile();
+		LocalTime now = LocalTime.now();
+		
+
+		while(true)
+		{
+			ReadFile();
+			int s = now.getSecond();
+			sleep(s);
+		}
+		
 	
 		
 	
 		
 
+	}
+	private static void sleep(int s) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
