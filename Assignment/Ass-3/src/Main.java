@@ -9,7 +9,7 @@ import java.time.LocalTime;
 
 
 public class Main {
-	private static final String FILENAME = "../Assignment-3/src/input";
+	private static final String FILENAME = "./input";
 	static char[][] starIndex = null;
 	public static void ReadFile()
 	{
