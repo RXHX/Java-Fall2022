@@ -9,7 +9,7 @@ import java.time.LocalTime;
 
 
 public class Main {
-	private static final String FILENAME = "./input";
+	private static final String FILENAME = "../Assignment2-RohanKediyal-300353370/src/input";
 	static char[][] starIndex = null;
 	public static void ReadFile()
 	{
@@ -26,7 +26,7 @@ public class Main {
             int rowCount = 0;
             int columnCount = 0;
            
-            Board board = new Board();
+        
 			int starInitialIndex = 0;
             while ((sCurrentLine = br.readLine()) != null) {
            
@@ -58,10 +58,9 @@ public class Main {
 			     
 				count++;    
 			}
-         // newBoard.print();
-          newBoard.findNumberOfNeighbour();
-    //      newBoard.print();
-		
+          
+          newBoard.print();
+          newBoard.findNumberOfNeighbour();   
 			br.close();
 
 		} catch (IOException e) {
