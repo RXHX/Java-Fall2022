@@ -1,48 +1,58 @@
 
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-
 public class Board {
 	
 
-
+        // default Constructor
 		public Board() {
 		super();
 	}
 
+		
+		//getters
 		public int getWidth() {
 			return width;
-		}
-
-		public void setWidth(int width) {
-			this.width = width;
 		}
 
 		public int getHeight() {
 			return height;
 		}
+		
+		public char[][] getCells() {
+			return cells;
+		}
+		
+
+		
+		// setters
+		public void setWidth(int width) {
+			this.width = width;
+		}
+
+		
 
 		public void setHeight(int height) {
 			this.height = height;
 		}
 
-		public char[][] getCells() {
-			return cells;
-		}
 
 		public void setCells(char[][] cells) {
 			this.cells = cells;
 		}
 
+		
+		// to store the width
 		private int width;
+		// to store the height
 		private int height;
+		// to store the cells
 		public char[][] cells;
+		// to store the neighbors 
 		public int [][] neighhbour;
+		// to store the tempCell
 	    public char[][] tempcells;
+	    
+	    // to  clear the console when using cmd
 		public final static void clearConsole() {
 			/*
 			 * clearConsole method to clear the console if you are using Windows' command
@@ -61,6 +71,7 @@ public class Board {
 			}
 		}
 
+		// Computes the neighbour
 		 public  int computeNeighbour( String status ,int i, int j)
 		  {
 			 
@@ -248,6 +259,7 @@ public class Board {
 		  }
 		 
 		 
+		 // prints the Neighbour
 		 public void printNeighbour()
 		 {
 
@@ -263,8 +275,10 @@ public class Board {
 			
 		 }
 		 
+		 // To Find the Number of Neighbours
 		  public void findNumberOfNeighbour()
 		  {
+		
 			neighhbour = new int[height][width];
 			tempcells = new char[height][width];
 			   String status = "";
@@ -317,6 +331,7 @@ public class Board {
 		  }
 	
 
+		  // Board Constructor with only two data members
 		public Board(int height, int width) {
 			/*
 			 * Constructor to create a board with height and width
@@ -326,6 +341,7 @@ public class Board {
 			
 		}
 
+		// To clear the console
 		public void clear() {
 			/*
 			 * Set all cells to space characters
@@ -337,6 +353,7 @@ public class Board {
 			}
 		}
 
+		// to print the information in console
 		public void print() {
 			/*
 			 * Print all cells of the board

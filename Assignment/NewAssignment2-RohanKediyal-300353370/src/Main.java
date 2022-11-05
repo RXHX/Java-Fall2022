@@ -1,96 +1,113 @@
 
+// Library Used in the Project
 import java.io.BufferedReader;
-import java.io.File;
+
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.time.LocalTime;
 
-
-
+// Main Execution Class
 public class Main {
-	private static final String FILENAME = "../Assignment2-RohanKediyal-300353370/src/input";
+	// Path of the File
+	private static final String FILENAME = "../NewAssignment2-RohanKediyal-300353370/src/input";
+	// char type Array
 	static char[][] starIndex = null;
-	public static void ReadFile()
-	{
+
+	// Method to Read the Board
+	public static Board ReadFile() {
+		// Buffered Reader
 		BufferedReader br = null;
+		// File Reader
 		FileReader fr = null;
-		PrintWriter pw = null;
+	
+		// instance of Board Class
 		Board newBoard = null;
-		
 		try {
+			// creation of object of FileReader
 			fr = new FileReader(FILENAME);
+			// creation of object of BufferedReader
 			br = new BufferedReader(fr);
+			// String to hold data
 			String sCurrentLine;
+			// counter to count number of lines in the file
 			int count = 0;
-            int rowCount = 0;
-            int columnCount = 0;
-           
-        
-			int starInitialIndex = 0;
-            while ((sCurrentLine = br.readLine()) != null) {
-           
-				if(count == 0)
-				{
+			// to count number of Rows
+			int rowCount = 0;
+			// to count number of Columns
+			int columnCount = 0;
+
+
+
+			// to iterate data in the File
+			while ((sCurrentLine = br.readLine()) != null) {
+
+				// for first Row
+				if (count == 0) {
+					// get rowCount
 					rowCount = Integer.parseInt(sCurrentLine);
 				}
-				else if(count == 1)
-				{
+				// for Second Row
+				else if (count == 1) {
+					// get Column Count
 					columnCount = Integer.parseInt(sCurrentLine);
-					 starIndex = new char[rowCount][columnCount];
-					 for (int i = 0; i < rowCount; i++) {
-							for (int j = 0; j < columnCount; j++) {
-								starIndex[i][j] = ' ';
-							}
+					// initialize the star Index
+					starIndex = new char[rowCount][columnCount];
+					// Make an Empty Array
+					for (int i = 0; i < rowCount; i++) {
+						for (int j = 0; j < columnCount; j++) {
+							starIndex[i][j] = ' ';
 						}
-				 }
-				else {
-					 
+					}
+				} else {
+
+					// make an Array with rowCount and ColumnCount
 					newBoard = new Board(rowCount, columnCount);
-				    String[] tempStorage = sCurrentLine.split(" ");	
-				    int row = Integer.parseInt(tempStorage[0]);
-				    int column = Integer.parseInt(tempStorage[1]);
+					// make an tempStorage string
+					String[] tempStorage = sCurrentLine.split(" ");
+					// store the row count
+					int row = Integer.parseInt(tempStorage[0]);
+					// store the Column Count
+					int column = Integer.parseInt(tempStorage[1]);
+					// Make a starIndex array
 					starIndex[row][column] = '#';
-				  newBoard.setCells(starIndex); 
-				 	    
+					// make the newBoard Array with # at specific location
+					newBoard.setCells(starIndex);
+
 				}
-				
-			     
-				count++;    
+
+				// update the counter
+				count++;
 			}
-          
-          newBoard.print();
-          newBoard.findNumberOfNeighbour();   
+			// Close File Reader
+			fr.close();
+			// Close Buffered Reader
 			br.close();
 
 		} catch (IOException e) {
 
 			e.printStackTrace();
 		}
-		
-		
-	}
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub	
-		LocalTime now = LocalTime.now();
-		
 
-		while(true)
-		{
-			ReadFile();
-			int s = now.getSecond();
-			sleep(s);
+		// Return the newBoard Object
+		return newBoard;
+
+	}
+
+	public static void main(String[] args) throws Exception {
+
+		// store newBoard Object inside the Board Class
+		Board board = ReadFile();
+
+		while (true) {
+
+			// Call the FindNumberOfNeighbour Method
+			board.findNumberOfNeighbour();
+			// Clear the board by Calling clearConsole Method
+			Board.clearConsole();
+			board.print();
+			Thread.sleep(3000);
+
 		}
-		
-	
-		
-	
-		
 
-	}
-	private static void sleep(int s) {
-		// TODO Auto-generated method stub
-		
 	}
 
 }
