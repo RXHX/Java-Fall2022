@@ -6,7 +6,7 @@
 		this.questionText = questionText;
 	}
 	abstract boolean checkAnswer(String answer);
-	 
+	
 	abstract String getCorrectAnswer();
 	
 
@@ -31,7 +31,7 @@
 
 
 	private String questionText;
-	 protected double point;
+	 private double point;
 	 
 	 
 	 public Question() {
