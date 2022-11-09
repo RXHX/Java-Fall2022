@@ -1,6 +1,5 @@
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -10,19 +9,21 @@ public class Main {
 
 	public static MCQuestion[] mcqquestions = new MCQuestion[100];
 	public static TFQuestion[] tquestions = new TFQuestion[100];
+	public static Question[] questions =  new Question[100];
 	public static int mcquestionsCount = 0;
 	public static int trueFalseQuestionsCount = 0;
+	public static int questionsCount = 0;  
 	public static String question;
-	public static int points;
+	public static double points;
 	public static char ch='A';
 	
 	
-	static Connection connection = null;
-	static Statement statement = null;
-	static ResultSet resultSet = null;
+	public static Connection connection = null;
+	public static Statement statement = null;
+
 
 	public static void dbInit() {
-		// Step 1: Loading the ucanaccess driver
+		
 		try {
 			Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
 		} catch (ClassNotFoundException e) {
@@ -33,7 +34,7 @@ public class Main {
 		String msAccDB = "Question.accdb";
 		String dbURL = "jdbc:ucanaccess://" + msAccDB;
 
-		// Step 2.A: Creating and getting connection
+	
 		try {
 			connection = DriverManager.getConnection(dbURL);
 		} catch (SQLException e) {
@@ -41,7 +42,7 @@ public class Main {
 			e.printStackTrace();
 		}
 
-		// Step 2.B: Creating JDBC Statement
+		
 		try {
 			statement = connection.createStatement();
 		} catch (SQLException e) {
@@ -55,32 +56,30 @@ public class Main {
 	public static void insertRecordMCQ(String QText, ArrayList<String> Answer, double Point, String Type) {
 	
 		
-		
+		String sendInformation = ""; 
 		
 		try {
 			
 			for(int i=0;i<Answer.size();i++)
 			{
-				
-				String sqlStr = "INSERT INTO QUESTION (QText,Answer,Point,Type) VALUES " 
-						+ "('"
-						+QText
-						+"'"+
-						",'"
-						+Answer.get(i)
-						+"'"
-						+","
-						+Point
-						+""
-						+",'"
-						+Type
-						+"'"
-						+")";
-				System.out.println(sqlStr);
-				statement.executeUpdate(sqlStr);
-				
+				sendInformation =   sendInformation +Answer.get(i)+"##";
 			}
 			
+			sendInformation = sendInformation.substring(0,sendInformation.length() - 2);
+
+			String sqlStr = "INSERT INTO QUESTIONS (QText,Answer,Point,Type) VALUES " 
+					+ "('"
+					+QText
+					+"'"+
+					",'"
+					+sendInformation
+					+"'"
+					+","
+					+Point
+					+",'"
+					+Type
+					+"')";
+			statement.executeUpdate(sqlStr);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -95,7 +94,7 @@ public class Main {
 		
 		String ans =  Answer+"";
 		
-		String sqlStr = "INSERT INTO QUESTION (QText,Answer,Point,Type) VALUES " 
+		String sqlStr = "INSERT INTO QUESTIONS (QText,Answer,Point,Type) VALUES " 
 				+ "('"
 				+QText
 				+"'"+
@@ -123,7 +122,6 @@ public class Main {
 		try {
 			connection.close();
 			statement.close();
-			resultSet.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -137,11 +135,11 @@ public class Main {
 		
 		int numberOfOption;
 		
-		
+		ArrayList<String> temporaryStorage = new ArrayList<>();
 		String optionAvailable = "";
 		String correctAnswer = "";
 		Scanner mcq = new Scanner(System.in);
-		System.out.print("Enter the question text >>");
+		System.out.print("Enter the question text >> ");
 		  question = mcq.nextLine();
 		System.out.print("How many options? ");
 		numberOfOption = mcq.nextInt();
@@ -149,8 +147,9 @@ public class Main {
 		 mcqquestions[mcquestionsCount] = new MCQuestion();
 		for(int i = 0; i < numberOfOption; i++) {
 			char option = (char) (ch + i);
-			System.out.print("Enter Option "+option+"(Start with * for correct answer) >>");
+			System.out.print("Enter Option "+option+"(Start with * for correct answer) >> ");
 			optionAvailable = mcq.nextLine();
+			temporaryStorage.add(optionAvailable);
 			if(optionAvailable.charAt(0) == '*')
 			{
 			correctAnswer = option+""; 
@@ -158,14 +157,17 @@ public class Main {
 			}	
 			mcqquestions[mcquestionsCount].addOption(optionAvailable);	
 		}
-		System.out.print("How many points?");
-		points = mcq.nextInt();	
+		System.out.print("How many points? ");
+		points = mcq.nextDouble();	
 		
 		 mcqquestions[mcquestionsCount].setQuestionText(question);  
 		 mcqquestions[mcquestionsCount].setPoint(points);	  
 	     mcqquestions[mcquestionsCount].setAnswer(correctAnswer);
-	    insertRecordMCQ(mcqquestions[mcquestionsCount].getQuestionText(), mcqquestions[mcquestionsCount].getOptions(),points,"MC");
+	     questions[mcquestionsCount] =  mcqquestions[mcquestionsCount];
+	    insertRecordMCQ(mcqquestions[mcquestionsCount].getQuestionText(), temporaryStorage,points,"MC");
+	    questions[questionsCount] =  questions[mcquestionsCount];
 	    mcquestionsCount++;
+	    questionsCount++;
 	}
 	
 	public static void trueFalseQuestionCreation()
@@ -177,8 +179,8 @@ public class Main {
 		question = truefalse.nextLine();
 		System.out.print("Answer is True or False? ");
 		answer = truefalse.nextBoolean();
-        System.out.print("How many points?");
-        points = truefalse.nextInt();
+        System.out.print("How many points? ");
+        points = truefalse.nextDouble();
         
         tquestions[trueFalseQuestionsCount]= new TFQuestion();
         tquestions[trueFalseQuestionsCount].setQuestionText(question);
@@ -186,7 +188,9 @@ public class Main {
         tquestions[trueFalseQuestionsCount].setPoint(points);
         insertRecordTF(question, answer, points, "TF");
        
+        questions[questionsCount] = tquestions[trueFalseQuestionsCount];
         trueFalseQuestionsCount++;
+        questionsCount++;
         
 	}
 	
@@ -194,7 +198,7 @@ public class Main {
 	{
 		String questionType;
 		Scanner input = new Scanner(System.in);
-		System.out.print("Enter the type of question (MC or TF) >>");
+		System.out.print("Enter the type of question (MC or TF) >> ");
 	    questionType = input.nextLine();
 	    switch(questionType)
 	    {
@@ -211,61 +215,68 @@ public class Main {
 	{
 	    Scanner sc = new Scanner(System.in);
 		String userAnswer = "";
-		double sum = 0.0;
-		for(int i=0;i<mcqquestions.length;i++)
-		{
-			if(mcqquestions[i] != null)
+		double sum = 0.0;	
+			for(int i=0;i<mcqquestions.length;i++)
 			{
-				
-				System.out.println(mcqquestions[i].getQuestionText()
-						+"("+mcqquestions[i].getPoint()
-						+" Points)");
-				
-				for(int l=0;l<mcqquestions[i].getOptions().size();l++)
+				if(mcqquestions[i] != null)
 				{
-					char option = (char) (ch + l);
-					System.out.println(option+": "+mcqquestions[i].getOptions().get(l));
-				}
-				
-				System.out.print("Enter your choice >>");
-				userAnswer = sc.nextLine();
-				
-				if(userAnswer.equals(mcqquestions[i].getAnswer()))
-				{
-					System.out.println("You are correct!");
-					sum = sum + mcqquestions[i].getPoint();
-				}
-				else {
-					System.out.println("You are wrong. The correct answer is "+ mcqquestions[i].getAnswer()+".");
+					
+					System.out.println(mcqquestions[i].getQuestionText()
+							+"("+mcqquestions[i].getPoint()
+							+" Points)");
+					
+					for(int l=0;l<mcqquestions[i].getOptions().size();l++)
+					{
+						char option = (char) (ch + l);
+						System.out.println(option+": "+mcqquestions[i].getOptions().get(l));
+					}
+					
+					System.out.print("Enter your choice >>");
+					userAnswer = sc.nextLine();
+					
+					if(userAnswer.equals(mcqquestions[i].getAnswer()))
+					{
+						System.out.println("You are correct!");
+						sum = sum + mcqquestions[i].getPoint();
+					}
+					else {
+						System.out.println("You are wrong. The correct answer is "+ mcqquestions[i].getAnswer()+".");
+					}
 				}
 			}
-		}
-		
-		
-		for(int i=0;i<tquestions.length;i++)
-		{
 			
-			if(tquestions[i] != null)
+			for(int i=0;i<tquestions.length;i++)
 			{
-				System.out.println(tquestions[i].getQuestionText()
-						+"("+tquestions[i].getPoint()
-						+" Points)");
-			
-			   System.out.print("True(T) or False(F) >>");
-			   userAnswer = sc.nextLine();
-			   
-			   if(tquestions[i].checkAnswer(userAnswer))
-			   {
-				   System.out.println("You are correct!");
-				   sum = sum + mcqquestions[i].getPoint();
-			   }
-			   else {
-				   System.out.println("You are wrong. The correct answer is "+tquestions[i].getAnswer());
-			   }
+				
+				if(tquestions[i] != null)
+				{
+					System.out.println(tquestions[i].getQuestionText()
+							+"("+tquestions[i].getPoint()
+							+" Points)");
+				
+				   System.out.print("True(T) or False(F) >> ");
+				   userAnswer = sc.nextLine();
+				   
+				   if(tquestions[i].checkAnswer(userAnswer))
+				   {
+					   System.out.println("You are correct!");
+					   sum = sum + mcqquestions[i].getPoint();
+				   }
+				   else {
+					   System.out.println("You are wrong. The correct answer is "+tquestions[i].getAnswer()+".");
+				   }
+				}
+				
 			}
 			
-		}
-		System.out.println("The quiz ends. Your score is "+sum);
+	
+		
+		
+		
+		
+		
+	
+		System.out.println("The quiz ends. Your score is "+sum+".");
 		
 	}
 	
@@ -276,7 +287,7 @@ public class Main {
 		String choice =  "";
 		do {
 			
-			System.out.print("Please choose (c)reate a question, (p)review or (e)xit >>");
+			System.out.print("Please choose (c)reate a question, (p)review or (e)xit >> ");
 			choice = sc.nextLine();
 			switch(choice)
 			{
@@ -294,12 +305,10 @@ public class Main {
 			default: break;
 			}
 			
-		}while(!choice.equalsIgnoreCase("E"));
-		
-		
-		
-		
+		}while(!choice.equalsIgnoreCase("E"));		
 	}
+	
+	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
