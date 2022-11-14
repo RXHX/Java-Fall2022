@@ -231,7 +231,7 @@ public class Main {
 						System.out.println(option+": "+mcqquestions[i].getOptions().get(l));
 					}
 					
-					System.out.print("Enter your choice >>");
+					System.out.print("Enter your choice >> ");
 					userAnswer = sc.nextLine();
 					
 					if(userAnswer.equals(mcqquestions[i].getAnswer()))
