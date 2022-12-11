@@ -37,7 +37,7 @@ public class View extends JFrame {
 	private JScrollPane scrollPane_1;
 	private JList to;
 	private JList from;
-	public static Model[] trainsInformation = new Model[50];
+	public static Model[] trainsInformation = new Model[57];
 	public static  double fareAmount;
 	/**
 	 * Launch the application.
@@ -82,7 +82,7 @@ public class View extends JFrame {
 	{
 		
 		DefaultListModel<String> model1 = new DefaultListModel();
-	    String[] trainList = new String[50];
+	    String[] trainList = new String[57];
 	    
 	    for(int i=0;i<trainList.length;i++)
 	    {
@@ -90,23 +90,14 @@ public class View extends JFrame {
 	        
 	    }
 
-	    for(int i=0;i<trainList.length;i++)
-	    {
-	       System.out.println(trainList[i]);	
-	        
-	    }
+	
 	    for(String s : trainList)
 	    {
 	    	model1.addElement(s);
 	    }
-	    
-	    System.out.println(model1);
-	    
-	    
-	    
-	    
-	    
+	   
 	    from.setModel(model1);
+	    
 	    to.setModel(model1);
 	
 	}
@@ -127,12 +118,15 @@ public class View extends JFrame {
 		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		
 		cashFare = new JRadioButton("Cash Fare");
+		
 		buttonGroup_1.add(cashFare);
 		
 		contactlessPayment = new JRadioButton("Contactless Payment Fare");
+		
 		buttonGroup_1.add(contactlessPayment);
 		
 		storedValue = new JRadioButton("Stored Value");
+		
 		buttonGroup_1.add(storedValue);
 		
 		adult = new JRadioButton("Adult");
@@ -154,49 +148,8 @@ public class View extends JFrame {
 	}
 	
 	
-	public void calculateFare(int fare, String fareType,int zone)
-	{
-      
-		switch(zone)
-		{
-		case 1: 
-			   if(adult.isSelected())
-			   {
-				   fareAmount = fare;
-			   }
-			   else if(concession.isSelected())
-			   {
-				   fareAmount = fare;
-			   }
-			
-			   break;
-		case 2:  if(adult.isSelected())
-		   {
-			fareAmount = fare;
-		   }
-		   else if(concession.isSelected())
-		   {
-			   fareAmount = fare;
-		   }
-			
-			
-			break;
-		case 3:   if(adult.isSelected())
-		   {
-			fareAmount= fare;
-		   }
-		   else if(concession.isSelected())
-		   {
-			   fareAmount= fare;
-		   }
-			
-			break;
-		
-		
-		}
-		
-		
-	}
+	
+	
 	
 	public void createEvent()
 	{
@@ -220,11 +173,14 @@ public class View extends JFrame {
 				
 				int fromIndex = from.getSelectedIndex();
 				int toIndex = to.getSelectedIndex();
+				double addonFare = 0;
+				
 				
 				int checkIndex;
 				double fare;
 				int zone;
 				String fareType = "";
+				boolean isZeroFair = false;
 				if(fromIndex>toIndex)
 				{
 					checkIndex = fromIndex;
@@ -236,9 +192,40 @@ public class View extends JFrame {
 				
 				zone = trainsInformation[checkIndex].zone;
 				
+				if(trainsInformation[fromIndex].getLine().equals(Line.Canada.toString()))
+				{
+					
+					if(trainsInformation[fromIndex].getName().equals("Templeton") ||
+							trainsInformation[fromIndex].getName().equals("Sea Island Centre")	||
+							trainsInformation[fromIndex].getName().equals("YVR-Airport"))
+					{
+					  addonFare = 5.0;
+						
+					}
+					
+					if(trainsInformation[toIndex].getLine().equals(Line.Canada.toString()))
+					{
+						if(trainsInformation[toIndex].getName().equals("Templeton") ||
+								trainsInformation[toIndex].getName().equals("Sea Island Centre")	||
+								trainsInformation[toIndex].getName().equals("YVR-Airport"))
+						{
+						  addonFare = 0.0;
+						  isZeroFair = true;
+							
+						}	
+						
+						
+					}
+					
+					
+					
+				}
+				
+				
 				
 				if(cashFare.isSelected())
 				{
+					concession.setEnabled(true);
 					switch(zone)
 					{
 					case 1: 
@@ -276,14 +263,17 @@ public class View extends JFrame {
 					
 					
 					}
+					fareType = "CASH";
 				}
 				else if(contactlessPayment.isSelected())
 				{
+				
+					concession.setEnabled(false);
 					switch(zone)
 					{
 					case 1: 
 						   if(adult.isSelected())
-						   {
+			fareAmount = fareAmount + addonFare;				   {
 							   fareAmount = 3.05;
 						   }
 						 
@@ -306,9 +296,10 @@ public class View extends JFrame {
 					
 					
 					}
+					fareType = "CONTACTLESS PAYMENT";
 				}
 				else if(storedValue.isSelected())
-				{
+				{ concession.setEnabled(true);
 					switch(zone)
 					{
 					case 1: 
@@ -346,13 +337,22 @@ public class View extends JFrame {
 					
 					
 					}
+					fareType = "STORED VALUE";
 					
 				}
 				
+				if(isZeroFair)
+				{
+					fareAmount = 0;
+				}
+				else {
+					fareAmount = fareAmount + addonFare;			
+				}
+		
 				
-			
-				
-				JOptionPane.showMessageDialog(null," Fare is: "+fareAmount);
+				JOptionPane.showMessageDialog(null,"The "+adult.getText()+" fare ( by "+fareType+")"+"\n"
+				  +"from "+trainsInformation[fromIndex].getName()+"\nto "+trainsInformation[toIndex].getName()+"\nis $"+fareAmount
+				  +" ("+trainsInformation[checkIndex].getZone()+"-Zone)");
 				
 				
 				  
@@ -361,7 +361,24 @@ public class View extends JFrame {
 			}
 		});
 		
+		contactlessPayment.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				concession.setEnabled(false);
+			}
+		});
 		
+		storedValue.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			   concession.setEnabled(true);
+			}
+		});
+		
+		cashFare.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				concession.setEnabled(true);
+			}
+		});
 	}
 	
 	
@@ -450,7 +467,6 @@ public class View extends JFrame {
 		consumeData();
 		insertData();
 		createEvent();
-	
 		groupLayout();
 		
 	}

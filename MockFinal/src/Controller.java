@@ -11,7 +11,7 @@ public class Controller {
 	static Connection connection = null;
 	static Statement statement = null;
 	static ResultSet resultSet = null;
-    static Model[] trains = new Model[50];
+    static Model[] trains = new Model[57];
 	public Model[] dBDemo() {
 
 		// Step 1: Loading the ucanaccess driver
@@ -40,7 +40,7 @@ public class Controller {
 			int index = 0;
 			while (resultSet.next()) {
 				
-				if(index != 50 )
+				if(index != 58 )
 				{
 					Model newtrain = new Model();
 				    newtrain.setId(resultSet.getInt("ID"));

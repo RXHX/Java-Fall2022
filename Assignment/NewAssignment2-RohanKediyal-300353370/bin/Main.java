@@ -104,7 +104,7 @@ public class Main {
 			// Clear the board by Calling clearConsole Method
 			Board.clearConsole();
 			board.print();
-			Thread.sleep(3000);
+			Thread.sleep(2000);
 
 		}
 
